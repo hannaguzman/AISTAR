@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI STAR</title>
+<style>
+:root{--bg:#0b0b0e;--card:#141419;--ink:#f5f2ea;--mute:#8d8a93;--line:#26262e;--accent:#e8b94a;--accent-ink:#14110a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Iowan Old Style','Times New Roman',serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+main{width:100%;max-width:400px;text-align:center}
+.star{width:60px;height:60px;filter:drop-shadow(0 0 14px rgba(232,185,74,.45));animation:spin 1.6s cubic-bezier(.3,.7,.2,1) 1}
+@keyframes spin{from{transform:rotate(-140deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.star{animation:none}}
+h1{font-weight:400;font-size:2rem;margin:16px 0 6px;letter-spacing:-.01em}
+p.sub{margin:0 0 28px;color:var(--mute);font-size:1.02rem;line-height:1.5}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:10px}
+button,input{font:inherit;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:.97rem}
+.opt{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--ink);cursor:pointer}
+.opt:hover{background:var(--bg)}
+.opt:focus-visible,.go:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt svg{width:20px;height:20px}
+.sep{color:var(--mute);font-size:.85rem;font-family:system-ui,sans-serif;margin:4px 0}
+input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+.go{width:100%;padding:13px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);cursor:pointer;font-weight:600}
+.link{background:none;border:0;color:var(--mute);cursor:pointer;text-decoration:underline;padding:4px}
+.msg{font-family:system-ui,sans-serif;font-size:.85rem;color:var(--mute);min-height:1.2em;margin:0}
+.legal{margin-top:18px;font-family:system-ui,sans-serif;font-size:.8rem;color:var(--mute);line-height:1.5}
+[hidden]{display:none!important}
+
+.pw{position:relative}
+</style>
+</head>
+<body>
+<main>
+  <svg class="star" viewBox="0 0 24 24" fill="url(#g)" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#f6d77a"/><stop offset="1" stop-color="#d9a52b"/></linearGradient></defs><path d="M12 1.5l2.6 6.9 7.4.4-5.8 4.6 2 7.1L12 16.6 5.8 20.5l2-7.1L2 8.8l7.4-.4z"/></svg>
+
+  <section id="s-auth">
+    <h1 id="title">Crea tu cuenta en AI STAR</h1>
+    <p class="sub">Elige cómo quieres entrar. Tu cuenta queda guardada para la próxima vez.</p>
+    <div class="card">
+      <button class="opt" id="b-google"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.6a4.8 4.8 0 0 1-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.5z"/><path fill="#34A853" d="M12 22c2.8 0 5.1-.9 6.8-2.5l-3.4-2.6c-.9.6-2.1 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H2.9v2.700A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.400 13.800a6 6 0 0 1 0-3.600V7.500H2.900a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.500 0 2.800.5 3.900 1.5l2.9-2.9A10 10 0 0 0 2.9 7.5l3.5 2.7C7.2 7.8 9.4 6 12 6z"/></svg>Continuar con Google</button>
+      <div class="sep">o</div>
+      <input id="email" type="email" placeholder="Correo electrónico" autocomplete="email">
+      <input id="pass" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="new-password">
+      <button class="go" id="b-email">Crear cuenta</button>
+      <p class="msg" id="err" role="alert"></p>
+      <button class="link" id="b-toggle">¿Ya tienes cuenta? Inicia sesión</button>
+      <button class="link" id="b-reset" hidden>Olvidé mi contraseña</button>
+      <button class="link" id="b-guest">Probar como invitado</button>
+    </div>
+  </section>
+
+  <section id="s-done" hidden>
+    <h1>Bienvenida a AI STAR</h1>
+    <p class="sub" id="done-sub"></p>
+    <div class="card">
+      <button class="go" id="b-continue">Empezar a chatear</button>
+      <button class="link" id="b-out">Cerrar sesión</button>
+    </div>
+  </section>
+
+  <p class="legal">Tu cuenta queda guardada de forma segura con Firebase.</p>
+</main>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,signInAnonymously,sendPasswordResetEmail,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyBRfBOty_3uIF5xfYaSWSFU7CJVz1sqZFE",
+  authDomain:"ai-star-357a9.firebaseapp.com",
+  projectId:"ai-star-357a9",
+  storageBucket:"ai-star-357a9.firebasestorage.app",
+  messagingSenderId:"381826090213",
+  appId:"1:381826090213:web:ca5434be4dc530c64e800c"
+};
+const auth=getAuth(initializeApp(firebaseConfig));
+auth.languageCode="es";
+
+const $=id=>document.getElementById(id);
+const msgs={
+  "auth/email-already-in-use":"Ese correo ya tiene una cuenta. Inicia sesión.",
+  "auth/invalid-email":"El correo no es válido.",
+  "auth/weak-password":"La contraseña debe tener al menos 6 caracteres.",
+  "auth/invalid-credential":"Correo o contraseña incorrectos.",
+  "auth/missing-password":"Escribe tu contraseña.",
+  "auth/too-many-requests":"Demasiados intentos. Espera un rato y vuelve a probar.",
+  "auth/operation-not-allowed":"Este método no está activado en Firebase.",
+  "auth/unauthorized-domain":"Este dominio no está autorizado en Firebase (Authentication > Configuración > Dominios autorizados).",
+  "auth/network-request-failed":"Sin conexión. Revisa tu internet."
+};
+const say=t=>$("err").textContent=t;
+const fail=e=>{if(e.code==="auth/popup-closed-by-user")return;say(msgs[e.code]||("Error: "+(e.code||e.message)))};
+
+let register=true;
+function setMode(){
+  $("title").textContent=register?"Crea tu cuenta en AI STAR":"Inicia sesión en AI STAR";
+  $("b-email").textContent=register?"Crear cuenta":"Iniciar sesión";
+  $("b-toggle").textContent=register?"¿Ya tienes cuenta? Inicia sesión":"¿Aún no tienes cuenta? Créala";
+  $("pass").autocomplete=register?"new-password":"current-password";
+  $("b-reset").hidden=register;say("");
+}
+$("b-toggle").onclick=()=>{register=!register;setMode()};
+
+$("b-google").onclick=async()=>{say("");try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){fail(e)}};
+
+$("b-email").onclick=async()=>{say("");
+  const e=$("email").value.trim(),p=$("pass").value;
+  if(!e){say("Escribe tu correo.");return}
+  try{register?await createUserWithEmailAndPassword(auth,e,p):await signInWithEmailAndPassword(auth,e,p)}catch(x){fail(x)}};
+
+$("b-reset").onclick=async()=>{say("");
+  const e=$("email").value.trim();
+  if(!e){say("Escribe tu correo arriba y vuelve a tocar este botón.");return}
+  try{await sendPasswordResetEmail(auth,e);say("Te enviamos un correo para cambiar la contraseña.")}catch(x){fail(x)}};
+
+$("b-guest").onclick=async()=>{say("");try{await signInAnonymously(auth)}catch(e){fail(e)}};
+$("b-out").onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,u=>{
+  if(u){
+    $("done-sub").textContent=u.isAnonymous?"Entraste como invitado.":"Entraste como "+(u.displayName||u.email)+".";
+    $("s-auth").hidden=true;$("s-done").hidden=false;
+  }else{$("s-auth").hidden=false;$("s-done").hidden=true}
+});
+</script>
+</body>
+</html>
